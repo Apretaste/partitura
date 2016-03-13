@@ -2,16 +2,9 @@
 
 {for $i = 0 to 9}
 	{if isset($titles[$i]) }
-<p>{link href="partitura detalle {$urls[$i]} {$pages[$i]} {$titles[$i]|replace:' ':'-'}" caption= "{$titles[$i]}, {$pages[$i]}, {$instruments[$i]}"}</p>
-
+		<p>{link href="partitura detalle {$urls[$i]} {$pages[$i]} {$titles[$i]|replace:' ':'-'}" caption= "{$titles[$i]}, {$pages[$i]}, {$instruments[$i]}"}</p>
 	{/if}
-
-	
-	{/for}
-
-
-
-
+{/for}
 
 {space10}
 
@@ -20,8 +13,7 @@
 {space15}
 
 <center>
-	<p><small>Mejore tu passion de jugar tu instrumento favorito.</small></p>
-	
+	<p><small>Mejore tu pasion de tocar tu instrumento favorito.</small></p>
 	{space15}
 </center>
 

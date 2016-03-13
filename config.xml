@@ -1,6 +1,6 @@
 <service>
-	<serviceName>[partitura]</serviceName>
-	<serviceDescription>Expandir tus Artes Instrumentales?</serviceDescription>
+	<serviceName>partitura</serviceName>
+	<serviceDescription>Muestra acordes para una cancion</serviceDescription>
 	<creatorEmail>salvi.pascual@gmail.com</creatorEmail>
 	<!--serviceCategory: negocios,ocio,academico,social,comunicaciones,informativo,adulto,otros-->
 	<serviceCategory>ocio</serviceCategory>

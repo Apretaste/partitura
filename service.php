@@ -2,7 +2,7 @@
 
 use Goutte\Client; // UNCOMMENT TO USE THE CRAWLER OR DELETE
 
-class PARTITURA extends Service
+class Partitura extends Service
 {
 	/**
 	 * Function executed when the service is called
@@ -12,7 +12,6 @@ class PARTITURA extends Service
 	 * */
 	public function _main(Request $request)
 	{
-		
 		// create a new client
 		$client = new Client();
 		$guzzle = $client->getClient();
@@ -20,51 +19,32 @@ class PARTITURA extends Service
 		$client->setClient($guzzle);
 
 		// create a crawler
-	//	$crawler = $client->request('GET', "http://sheetdownload.com/search?q=" . $request->query . "&submit=Search");
 		$crawler = $client->request('GET', "https://musescore.com/sheetmusic?text=" . $request->query);
-		
-		// search for result
-//		$result = $crawler->filter('.view-content:nth-child(2)')->attr("src");
 
-
-		$titles = $crawler->filter('.views-field-title .field-content a')->each(function ($node, $i)
-		{
+		$titles = $crawler->filter('.views-field-title .field-content a')->each(function ($node, $i){
 		    return $node->text(); 
 		});
 
-		$pages = $crawler->filter('.score-pages')->each(function ($node, $i)
-		{
+		$pages = $crawler->filter('.score-pages')->each(function ($node, $i){
 		    return $node->text(); 
 		});
 
-		$instruments = $crawler->filter('.views-field-field-score-part-programs-value .field-content')->each(function ($node, $i)
-		{
+		$instruments = $crawler->filter('.views-field-field-score-part-programs-value .field-content')->each(function ($node, $i){
 		    return $node->text(); 
 		});
 
-		$urls = $crawler->filter('.picture img')->each(function ($node, $i)
-		{
+		$urls = $crawler->filter('.picture img')->each(function ($node, $i){
 		    return $node->attr("src"); 
 		});
 
-	
-			
-
 		// create a json object to send to the template
-			$responseContent = array(
+		$responseContent = array(
 			"titles" => $titles,
 			"Song" => $request->query,
 			"pages" => $pages,
 			"instruments" => $instruments,
 			"urls" => $urls
 		);
-
-		/*		$responseContent = array(
-			"Song" => $request->query,
-			"var_two" => $request->query,
-			"var_three" => "Use Your Illusion II"  
-		);  */
-
 
 		// create the response
 		$response = new Response();
@@ -75,8 +55,6 @@ class PARTITURA extends Service
 
 	public function _detalle (Request $request)
 	{
-
-		
 		$chopped = explode(" ", $request->query);
 		$url = $chopped[0];
 		$page = $chopped[1];
@@ -98,7 +76,7 @@ class PARTITURA extends Service
 			{
 				$savePath = $temp.$this->utils->generateRandomHash().".jpg";
 				file_put_contents($savePath, file_get_contents($image));
-//				imagejpeg($savePath, $savePath);
+//				imagejpeg($savePath, $savePath); // @TODO convert to jpg
 				$this->utils->optimizeImage($savePath, 300);
 				$images[] = $savePath;
 			}
