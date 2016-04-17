@@ -2,13 +2,19 @@
 
 {for $i = 0 to 9}
 	{if isset($titles[$i]) }
-		<p>{link href="partitura detalle {$urls[$i]} {$pages[$i]} {$titles[$i]|replace:' ':'-'}" caption= "{$titles[$i]}, {$pages[$i]}, {$instruments[$i]}"}</p>
+		<h3>{$titles[$i]}</h3>
+		<p>
+		{* {link href="partitura detalle {$urls[$i]} {$pages[$i]} {$titles[$i]|replace:' ':'-'}" caption= "{$titles[$i]}, {$pages[$i]}, {$instruments[$i]}"} *}
+		{foreach item=item from=$newurls[$i] key=key}
+			{link href="NAVEGAR {$item}" caption="P&aacute;g. {$key}"} |
+		{/foreach}
+		</p>
 	{/if}
 {/for}
 
 {space10}
 
-<p>{$var_one|capitalize} {$var_two|capitalize} {$var_three|capitalize}</p>
+{* <p>{$var_one|capitalize} {$var_two|capitalize} {$var_three|capitalize}</p> *}
 
 {space15}
 
