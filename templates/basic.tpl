@@ -13,16 +13,3 @@
 {/for}
 
 {space10}
-
-{* <p>{$var_one|capitalize} {$var_two|capitalize} {$var_three|capitalize}</p> *}
-
-{space15}
-
-<center>
-	<p><small>Mejore tu pasion de tocar tu instrumento favorito.</small></p>
-	{space15}
-</center>
-
-{space30}
-
-<p>Adjunto archivo tiene tu musica</p>
