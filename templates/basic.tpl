@@ -14,7 +14,7 @@ puedas ahorrar cr&eacute;dito de tu celular si solo deseas una p&aacute;gina.</p
 				<td><b>{$titles[$i]}</b></td>
 				<td>
 				{foreach item=item from=$newurls[$i] key=key}
-					{button href="NAVEGAR {$item}" caption="P&aacute;g. {$key+1}" size="samall" color="green"} 
+					{button href="NAVEGAR {$item}" caption="P&aacute;g. {$key+1}" size="small" color="green"} 
 					{if not $item@last}{separator}{/if}
 				{/foreach}
 				</td>
