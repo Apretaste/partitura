@@ -68,10 +68,12 @@ class Partitura extends Service
 				$arr = array();
 				$v = $this->getScoreImageUrl($v);
 				
-				for ($i = 1; $i <= $pages[$k] * 1; $i ++)
-				{
-					$arr[] = str_replace('score_0', 'score_' . ($i - 1), $v);
-				}
+				if (isset($pages[$k])) 
+					for ($i = 1; $i <= $pages[$k] * 1; $i ++)
+					{
+						$arr[] = str_replace('score_0', 'score_' . ($i - 1), $v);
+					}
+				
 				$new[] = $arr;
 			}
 			
@@ -124,44 +126,4 @@ class Partitura extends Service
 		
 		return '';
 	}
-	
-	/*
-	 * public function detalle (Request $request)
-	 * {
-	 * $chopped = explode(" ", $request->query);
-	 * $url = $chopped[0];
-	 * $page = $chopped[1];
-	 * $title = str_replace("-", " ", $chopped[2]);
-	 *
-	 * $pos = strpos($url, "thumb");
-	 * $chopped = str_split($request->query, $pos);
-	 *
-	 * // get path to the temp folder
-	 * $di = \Phalcon\DI\FactoryDefault::getDefault();
-	 * $temp = $di->get('path')['root'] . "/temp/";
-	 *
-	 * $images = array();
-	 * for ($i = 0; $i < $page; $i ++) {
-	 * $image = $chopped[0] . "score_$i.png";
-	 * $file_headers = @get_headers($image);
-	 * if (strpos($file_headers[0], '200') !== false) {
-	 * $savePath = $temp . $this->utils->generateRandomHash() . ".jpg";
-	 * file_put_contents($savePath, file_get_contents($image));
-	 * // imagejpeg($savePath, $savePath); // @TODO convert to jpg
-	 * $this->utils->optimizeImage($savePath, 300);
-	 * $images[] = $savePath;
-	 * }
-	 * }
-	 *
-	 * $responseContent = array(
-	 * "song" => $title,
-	 * "images" => $images
-	 * );
-	 *
-	 * $response = new Response();
-	 * $response->setResponseSubject("Su partitura de " . ucwords($title));
-	 * $response->createFromTemplate("final.tpl", $responseContent, $images);
-	 * return $response;
-	 * }
-	 */
 }

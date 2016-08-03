@@ -8,14 +8,17 @@ puedas ahorrar cr&eacute;dito de tu celular si solo deseas una p&aacute;gina.</p
 
 {for $i = 0 to 9}
 	{if isset($titles[$i]) }
-		<h3>{$titles[$i]}</h3>
-		<p>
-		{* {link href="partitura detalle {$urls[$i]} {$pages[$i]} {$titles[$i]|replace:' ':'-'}" caption= "{$titles[$i]}, {$pages[$i]}, {$instruments[$i]}"} *}
-		{foreach item=item from=$newurls[$i] key=key}
-			{link href="NAVEGAR {$item}" caption="P&aacute;g. {$key+1}"} 
-			{if not $item@last}{separator}{/if}
-		{/foreach}
-		</p>
+		{if isset($newurls[$i][0])}
+			<h3>{$titles[$i]}</h3>
+			{button href="LETRA {$Song}" caption="Ver Letra"}<br/>
+			<p>
+			{* {link href="partitura detalle {$urls[$i]} {$pages[$i]} {$titles[$i]|replace:' ':'-'}" caption= "{$titles[$i]}, {$pages[$i]}, {$instruments[$i]}"} *}
+			{foreach item=item from=$newurls[$i] key=key}
+				{link href="NAVEGAR {$item}" caption="P&aacute;g. {$key+1}"} 
+				{if not $item@last}{separator}{/if}
+			{/foreach}
+			</p>
+		{/if}
 	{/if}
 {/for}
 
