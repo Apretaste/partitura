@@ -77,6 +77,16 @@ class Partitura extends Service
 				$new[] = $arr;
 			}
 			
+			// Not found
+			if (count($new) < 1)
+			{
+				// create the response
+				$response = new Response();
+				$response->setResponseSubject("No se encontraron resultados de partituras para " . ucwords($request->query));
+				$response->createFromText("No se encontraron resultados de partituras para " . ucwords($request->query). ". Por favor verifica que hayas escrito bien el nombre de la canci&oacute;n. En caso de persistir el problema contacta cone el soporte t&eacute;cnico. Disculpa los inconvenientes causados.");
+				return $response;
+			}
+			
 			// create a json object to send to the template
 			$responseContent = array(
 				"titles" => $titles,
