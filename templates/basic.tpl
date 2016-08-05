@@ -6,7 +6,7 @@ de imagen PNG con un tama&ntilde;o promedio de 80KB. Para cada canci&oacute;n se
 los enlaces de cada p&aacute;gina de su partitura para que puedas descargarlas una a una y as&iacute;
 puedas ahorrar cr&eacute;dito de tu celular si solo deseas una p&aacute;gina.</p>
 
-<table width="100%">
+<table width="100%" cellpadding="2">
 {for $i = 0 to 9}
 	{if isset($titles[$i]) }
 		{if isset($newurls[$i][0])}
@@ -15,7 +15,6 @@ puedas ahorrar cr&eacute;dito de tu celular si solo deseas una p&aacute;gina.</p
 				<td>
 				{foreach item=item from=$newurls[$i] key=key}
 					{button href="NAVEGAR {$item}" caption="P&aacute;g. {$key+1}" size="small" color="green"} 
-					{if not $item@last}{separator}{/if}
 				{/foreach}
 				</td>
 				<td align="right">
