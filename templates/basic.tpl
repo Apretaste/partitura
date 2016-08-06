@@ -11,16 +11,17 @@ puedas ahorrar cr&eacute;dito de tu celular si solo deseas una p&aacute;gina.</p
 	{if isset($titles[$i]) }
 		{if isset($newurls[$i][0])}
 			<tr>
-				<td>{$titles[$i]}</td>
-				<td width="20%" >
+				<td valign="top">{$titles[$i]}</td>
+				<td width="20%" valign="top">
 				{foreach item=item from=$newurls[$i] key=key}
-					Partitura #{link href="NAVEGAR {$item}" caption="{$key+1}"} <br/>
+					{link href="NAVEGAR {$item}" caption="Partitura #{$key+1}"} <br/>
 				{/foreach}
 				</td>
-				<td width="20%" align="right">
-				{button href="LETRA {$Song}" caption="Ver Letra" color="grey" size="small"}
+				<td width="20%" align="right" valign="top">
+				{link href="LETRA {$Song}" caption="Ver Letra"}
 				</td>
 			</tr>
+			<tr><td colspan="3"><hr/></td></tr>
 		{/if}
 	{/if}
 {/for}
