@@ -1,8 +1,7 @@
 <h1>{$Song|capitalize}</h1>
 
-<p>Estas son las canciones encontradas para <b>{$Song}</b>. Cada canci&oacute;n 
-tiene una partitura y cada partitura puede tener varias p&aacute;ginas que se obtienen en formato 
-de imagen PNG con un tama&ntilde;o promedio de 80KB. Para cada canci&oacute;n se muestran 
+<p align="justify" >Estas son las canciones encontradas para <b>{$Song}</b>. Cada canci&oacute;n 
+tiene varias partituras que se obtienen en formato de imagen PNG con un tama&ntilde;o promedio de 80KB. Para cada canci&oacute;n se muestran 
 los enlaces de cada p&aacute;gina de su partitura para que puedas descargarlas una a una y as&iacute;
 puedas ahorrar cr&eacute;dito de tu celular si solo deseas una p&aacute;gina.</p>
 
