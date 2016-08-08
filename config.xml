@@ -1,5 +1,10 @@
 <service>
 	<serviceName>partitura</serviceName>
+	<serviceAliases>
+		<alias>partituras</alias>
+		<alias>acordes</alias>
+		<alias>acorde</alias>
+	</serviceAliases>
 	<serviceDescription>Muestra acordes para una cancion</serviceDescription>
 	<creatorEmail>kumahavana@gmail.com</creatorEmail>
 	<serviceCategory>ocio</serviceCategory>
