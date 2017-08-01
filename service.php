@@ -1,4 +1,5 @@
 <?php
+
 use Goutte\Client;
 
 class Partitura extends Service
@@ -20,7 +21,17 @@ class Partitura extends Service
 			return $response;
 		}
 
-		try {
+	/**
+	 * Function executed when the service is called
+	 *
+	 * @param
+	 *        	Request
+	 * @return Response
+	 */
+	public function _main(Request $request)
+	{
+		try
+		{
 			// create a new client
 			$client = new Client();
 			$guzzle = $client->getClient();
@@ -30,38 +41,60 @@ class Partitura extends Service
 			// create a crawler
 			$crawler = $client->request('GET', "https://musescore.com/sheetmusic?text=" . $request->query);
 
-			$titles = $crawler->filter('.views-field-title .field-content a')->each(function  ($node, $i){
+			$titles = $crawler->filter('.views-field-title .field-content a')->each(function ($node, $i)
+			{
 				return $node->text();
 			});
 
-			$pages = $crawler->filter('.score-pages')->each(function  ($node, $i){
+			$pages = $crawler->filter('.score-pages')->each(function ($node, $i)
+			{
 				return $node->text();
 			});
 
-			$instruments = $crawler->filter('.views-field-field-score-part-programs-value .field-content')->each(function  ($node, $i){
+			$instruments = $crawler->filter('.views-field-field-score-part-programs-value .field-content')->each(function ($node, $i)
+			{
 				return $node->text();
 			});
 
-			$urls = $crawler->filter('.picture img')->each(function  ($node, $i){
+			$urls = $crawler->filter('.picture img')->each(function ($node, $i)
+			{
 				return $node->attr("src");
 			});
 
-			$newurls = $crawler->filter('.views-field-title .field-content a')->each(function  ($node, $i){
+			$newurls = $crawler->filter('.views-field-title .field-content a')->each(function ($node, $i)
+			{
 				return $node->attr('href');
 			});
 
 			$new = array();
-			foreach ($newurls as $k => $v) {
-				if (trim($v)=='') {
+			foreach ($newurls as $k => $v)
+			{
+				if (trim($v) == '')
+				{
 					$newurls[$k] = array();
 					continue;
 				}
+
 				$arr = array();
 				$v = $this->getScoreImageUrl($v);
-				for ($i = 1; $i <= $pages[$k] * 1; $i ++) {
-					$arr[] = str_replace('score_0', 'score_' . ($i-1), $v);
-				}
+
+				if (isset($pages[$k]))
+					for ($i = 1; $i <= $pages[$k] * 1; $i ++)
+					{
+						$arr[] = str_replace('score_0', 'score_' . ($i - 1), $v);
+					}
+
 				$new[] = $arr;
+			}
+
+			// Not found
+			if (count($new) < 1)
+			{
+				// create the response
+				$response = new Response();
+				$response->setResponseSubject("No se encontraron resultados de partituras para " . ucwords($request->query));
+				$response->createFromText("No se encontraron resultados de partituras para " . ucwords($request->query). ". Por favor verifica que hayas escrito bien el nombre de la canci&oacute;n. En caso de persistir el problema contacta cone el soporte t&eacute;cnico. Disculpa los inconvenientes causados.");
+				return $response;
 			}
 
 			// create a json object to send to the template
@@ -89,7 +122,12 @@ class Partitura extends Service
 		}
 	}
 
-	private function getScoreImageUrl ($url)
+	/**
+	 * Return the URL of score image based on an URL page
+	 *
+	 * @param string $url
+	 */
+	private function getScoreImageUrl($url)
 	{
 		$client = new Client();
 		$guzzle = $client->getClient();
@@ -99,7 +137,8 @@ class Partitura extends Service
 		// create a crawler
 		$crawler = $client->request('GET', "https://musescore.com{$url}");
 
-		$url = $crawler->filter('.share42init')->each(function  ($node, $i){
+		$url = $crawler->filter('.share42init')->each(function ($node, $i)
+		{
 			return $node->attr('data-image');
 		});
 
@@ -107,43 +146,4 @@ class Partitura extends Service
 
 		return '';
 	}
-	/*
-	public function detalle (Request $request)
-	{
-		$chopped = explode(" ", $request->query);
-		$url = $chopped[0];
-		$page = $chopped[1];
-		$title = str_replace("-", " ", $chopped[2]);
-
-		$pos = strpos($url, "thumb");
-		$chopped = str_split($request->query, $pos);
-
-		// get path to the temp folder
-		$di = \Phalcon\DI\FactoryDefault::getDefault();
-		$temp = $di->get('path')['root'] . "/temp/";
-
-		$images = array();
-		for ($i = 0; $i < $page; $i ++) {
-			$image = $chopped[0] . "score_$i.png";
-			$file_headers = @get_headers($image);
-			if (strpos($file_headers[0], '200') !== false) {
-				$savePath = $temp . $this->utils->generateRandomHash() . ".jpg";
-				file_put_contents($savePath, file_get_contents($image));
-				// imagejpeg($savePath, $savePath); // @TODO convert to jpg
-				$this->utils->optimizeImage($savePath, 300);
-				$images[] = $savePath;
-			}
-		}
-
-		$responseContent = array(
-				"song" => $title,
-				"images" => $images
-		);
-
-		$response = new Response();
-		$response->setResponseSubject("Su partitura de " . ucwords($title));
-		$response->createFromTemplate("final.tpl", $responseContent, $images);
-		return $response;
-	}
-	*/
 }
