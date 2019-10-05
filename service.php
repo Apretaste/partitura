@@ -4,22 +4,6 @@ use Goutte\Client;
 
 class Partitura extends Service
 {
-	/**
-	 * Function executed when the service is called
-	 *
-	 * @param Request
-	 * @return Response
-	 */
-	public function _main (Request $request)
-	{
-		// do not allow blank searches
-		if(empty($request->query))
-		{
-			$response = new Response();
-			$response->setResponseSubject("Que desea buscar en Wikipedia?");
-			$response->createFromTemplate("home.tpl", array());
-			return $response;
-		}
 
 	/**
 	 * Function executed when the service is called
@@ -30,8 +14,16 @@ class Partitura extends Service
 	 */
 	public function _main(Request $request)
 	{
-		try
-		{
+		// do not allow blank searches
+		if (empty($request->query)) {
+			$response = new Response();
+			$response->setResponseSubject("Que desea buscar en Wikipedia?");
+			$response->createFromTemplate("home.tpl", []);
+
+			return $response;
+		}
+
+		try {
 			// create a new client
 			$client = new Client();
 			$guzzle = $client->getClient();
@@ -41,36 +33,29 @@ class Partitura extends Service
 			// create a crawler
 			$crawler = $client->request('GET', "https://musescore.com/sheetmusic?text=" . $request->query);
 
-			$titles = $crawler->filter('.views-field-title .field-content a')->each(function ($node, $i)
-			{
+			$titles = $crawler->filter('.views-field-title .field-content a')->each(function ($node, $i) {
 				return $node->text();
 			});
 
-			$pages = $crawler->filter('.score-pages')->each(function ($node, $i)
-			{
+			$pages = $crawler->filter('.score-pages')->each(function ($node, $i) {
 				return $node->text();
 			});
 
-			$instruments = $crawler->filter('.views-field-field-score-part-programs-value .field-content')->each(function ($node, $i)
-			{
+			$instruments = $crawler->filter('.views-field-field-score-part-programs-value .field-content')->each(function ($node, $i) {
 				return $node->text();
 			});
 
-			$urls = $crawler->filter('.picture img')->each(function ($node, $i)
-			{
+			$urls = $crawler->filter('.picture img')->each(function ($node, $i) {
 				return $node->attr("src");
 			});
 
-			$newurls = $crawler->filter('.views-field-title .field-content a')->each(function ($node, $i)
-			{
+			$newurls = $crawler->filter('.views-field-title .field-content a')->each(function ($node, $i) {
 				return $node->attr('href');
 			});
 
 			$new = array();
-			foreach ($newurls as $k => $v)
-			{
-				if (trim($v) == '')
-				{
+			foreach ($newurls as $k => $v) {
+				if (trim($v) == '') {
 					$newurls[$k] = array();
 					continue;
 				}
@@ -78,18 +63,17 @@ class Partitura extends Service
 				$arr = array();
 				$v = $this->getScoreImageUrl($v);
 
-				if (isset($pages[$k]))
-					for ($i = 1; $i <= $pages[$k] * 1; $i ++)
-					{
+				if (isset($pages[$k])) {
+					for ($i = 1; $i <= $pages[$k] * 1; $i ++) {
 						$arr[] = str_replace('score_0', 'score_' . ($i - 1), $v);
 					}
+				}
 
 				$new[] = $arr;
 			}
 
 			// Not found
-			if (count($new) < 1)
-			{
+			if (count($new) < 1) {
 				// create the response
 				$response = new Response();
 				$response->setResponseSubject("No se encontraron resultados de partituras para " . ucwords($request->query));
@@ -112,9 +96,7 @@ class Partitura extends Service
 			$response->setResponseSubject("Resultados para " . ucwords($request->query));
 			$response->createFromTemplate("basic.tpl", $responseContent);
 			return $response;
-		}
-		catch (Exception $e)
-		{
+		} catch (Exception $e) {
 			$response = new Response();
 			$response->setResponseSubject("No se pudo obtener las partituras");
 			$response->createFromText("En estos momentos no se pudo obtener las partituras. Int&eacute;ntelo m&aacute;s tarde. Si el problema persiste, por favor, contacte al soporte t&eacute;nico. Disculpe las molestias ocasionadas.");
@@ -137,12 +119,13 @@ class Partitura extends Service
 		// create a crawler
 		$crawler = $client->request('GET', "https://musescore.com{$url}");
 
-		$url = $crawler->filter('.share42init')->each(function ($node, $i)
-		{
+		$url = $crawler->filter('.share42init')->each(function ($node, $i) {
 			return $node->attr('data-image');
 		});
 
-		if (isset($url[0])) return $url[0];
+		if (isset($url[0])) {
+			return $url[0];
+		}
 
 		return '';
 	}
